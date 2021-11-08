@@ -1,0 +1,15 @@
+{
+  "name": "awth",
+  "version": "1.0.0",
+  "description": "Awth is my awesome auth project. This project will be API only, to really simplify the app and focus on authentication. The goal is to build an application with a resource API and a dedicated Auth service.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Myself",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12"
+  }
+}
