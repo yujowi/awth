@@ -1,22 +1,24 @@
+const config = require('./config.js');
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./routes/routes');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
-// middleware
+console.log(`NODE_ENV=${config.NODE_ENV}`);
 
-// set port
-const port = process.env.port || 3000;
+// middleware
+app.use(express.json());
+app.use(cookieParser());
+
 
 // app
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-app.use ((req,res) => {
-    res.status('404').send('Oops, you are lost baby');
+app.use(routes);
 
-})
-
-app.listen(port, () => {
-    console.log('We are online bitch!');
-});
+mongoose.connect(config.dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => app.listen(config.PORT, config.HOST, () => {
+    console.log(`App listening on http://${config.HOST}:${config.PORT}`);
+    console.log('We are online bitch!');     
+  }))
+  .catch((err) => console.log(err));
