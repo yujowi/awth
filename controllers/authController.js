@@ -37,8 +37,16 @@ module.exports.signIn_post = async (req, res) => {
         const user = await User.signIn(email, password);
         console.log(JWT_SECRET)
         const token = createToken(user);
+        res.header('Authorization', 'Bearer '+ token); 
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000 });
-        res.status(200).json({user: { id: user._id, email, password }})
+        res.status(200).json({
+            token,
+            user: { 
+                id: user._id, 
+                email, 
+                password 
+            }
+        })
     }
     catch (err) {
         console.log(err);

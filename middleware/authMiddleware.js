@@ -3,17 +3,18 @@ const { JWT_SECRET } = require('../config');
 
 const requireAuth = (req, res, next) => {
     console.log('authentication');
-    console.log(req.cookies.jwt);
-    const token = req.cookies.jwt;
 
+    const token = req.headers.authorization || req.cookies.jwt;
+    
     console.log ('authentication bitches!');
+    console.log (token);
 
-    try {
-        if (!token) { throw Error ('no token'); };
-        // validate
+    // validate
+    if (token) {
         jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
             if (err) {
-                console.log (err);
+                res.status(401).json("Hands off bitch!");
+                // console.log (err);
             } else {
                 console.log(decodedToken);
                 res.locals.user = decodedToken.user;
@@ -21,10 +22,9 @@ const requireAuth = (req, res, next) => {
                 return;
             };
         });
-    } catch (err) {
-        console.log (err);
+    } else {
         res.status(401).json("Hands off bitch!");
-    };
+    }
 };
 
 module.exports = { requireAuth };
